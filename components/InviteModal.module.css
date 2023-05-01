@@ -1,0 +1,53 @@
+.tagsinput {
+  overflow: hidden;
+  padding-left: 16px;
+  padding-top: 12px;
+  background: #FFFFFF;
+  border: 1px solid #E0E2E7;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.tagsinputRemove {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tagsinputTag {
+  background: #DCECFB;
+  border: 1px solid #E0E2E7;
+  border-radius: 20px;
+  color: #232325;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  margin-right: 10px;
+}
+
+.tagsinputTag a::before {
+  content: " ×";
+}
+
+.tagsinputInput {
+  background: transparent;
+  border: 0;
+  color: #777;
+  font-family: sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 12px;
+  margin-top: 1px;
+  outline: none;
+  padding: 5px;
+  width: 300px;
+}
+
+.selectProgram {
+  margin-top: 8px;
+  width: 320px;
+  height: 48px;
+}
