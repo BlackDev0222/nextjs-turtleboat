@@ -3,5 +3,6 @@ export type User = {
   name?: string | null | undefined,
   email?: string | null | undefined,
   image?: string | null | undefined,
-  role?: string | null | undefined
+  role?: string | null | undefined,
+  isNewUser?: boolean | null | undefined,
 };

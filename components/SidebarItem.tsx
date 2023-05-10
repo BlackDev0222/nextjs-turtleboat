@@ -1,6 +1,4 @@
 import styles from './SidebarItem.module.css'
-
-import Image from 'next/image'
 import { ReactNode } from 'react'
 
 const SidebarItem = ({
@@ -20,7 +18,7 @@ const SidebarItem = ({
         `justify-center
          flex flex-col 
          text-center w-full 
-         h-28 py-10 cursor-pointer
+         sm:h-28 sm:py-10 py-5 cursor-pointer
          hover:bg-gray-300 
          ${active ? "bg-white text-[#CE0000] border-l-2 border-[#CE0000]" : ""}`
       }

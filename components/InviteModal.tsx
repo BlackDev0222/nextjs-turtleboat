@@ -48,10 +48,11 @@ const InviteModal = ({
       });
 
       if (!response.ok) {
+        const { err } = await response.json();
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Something went wrong!',
+          text: err,
         });
       } else {
         Swal.fire(
@@ -173,8 +174,8 @@ const InviteModal = ({
             </div>
           </div>
         </div >
-        <div className="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40"></div>
       </Transition>
+      <div className={`bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40 ${!showModal ? "hidden" : ""}`}></div>
     </>
   );
 }
