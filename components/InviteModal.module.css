@@ -51,3 +51,9 @@
   width: 320px;
   height: 48px;
 }
+
+@media (max-width:400px) {
+  .selectProgram {
+    width: auto;
+  }
+}

@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
-import connectdb from "../utils/connectdb";
+import { useEffect } from "react";
 
 export default function App({
   Component,

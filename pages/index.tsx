@@ -6,19 +6,23 @@ import Swal from "sweetalert2";
 
 const Home = () => {
   const router = useRouter();
+  const { error } = router.query;
   const { status } = useSession();
-  useEffect(() => {
-    if (status == "authenticated") {
-      router.push("/dashboard/core");
-    }
-  }, [status]);
 
-  if (router.query.error == "AccessDenied") {
+  if (error?.toString()) {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: "Please contact a support team!",
-    });
+      text: error.toString(),
+    })
+      .then(() => {
+        router.push("/");
+      })
+      .catch(() => { });
+  }
+
+  if (status == "authenticated") {
+    router.push("/dashboard/core");
   }
 
   return <LandingPage />;

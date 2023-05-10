@@ -1,20 +1,28 @@
+import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
-import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
-import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
-import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
+import MarkunreadOutlinedIcon from "@mui/icons-material/MarkunreadOutlined";
+import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
+import EmojiObjectsOutlinedIcon from "@mui/icons-material/EmojiObjectsOutlined";
 import SidebarItem from "./SidebarItem";
 import InviteModal from "./InviteModal";
-import { signOut } from "next-auth/react";
-import { User } from "@/types/user.type";
-import { useState } from "react";
+import useUserStore from "@/stores/useUserStore";
 
-const LeftSidebar = ({ user }: { user: User }) => {
+const LeftSidebar = ({ noSelNav }: { noSelNav?: boolean }) => {
+  const router = useRouter();
+  const { user } = useUserStore();
+  const [visible, setVisible] = useState(false);
+  const [activeMenu, setActiveMenu] = useState(0);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [showUserDropMenu, setShowUserDropMenu] = useState(false);
+
   const urlBtnClicked = (idx: number) => {
     setActiveMenu(idx);
-    // router.push(menuUrls[idx]);
+    router.push(menuUrls[idx]);
   };
   const inviteBtnClicked = () => {
     setShowInviteModal(true);
@@ -26,7 +34,7 @@ const LeftSidebar = ({ user }: { user: User }) => {
     setShowInviteModal(false);
   };
   const onSignOutBtnClicked = async () => {
-    signOut({ callbackUrl: "/" });
+    signOut();
   };
 
   const menu = [
@@ -36,7 +44,7 @@ const LeftSidebar = ({ user }: { user: User }) => {
     "MESSAGES",
     user.role == "admin" ? "INVITE" : "REFERRAL",
   ];
-  const menuUrls = ["core", "myventures", "toolbox", "messages"];
+  const menuUrls = ["/dashboard/core", "/dashboard/myventures", "/dashboard/toolbox", "/dashboard/messages"];
   const menuIcons = [
     <GroupsOutlinedIcon key={0} className="m-auto" fontSize="medium" />,
     <EmojiObjectsOutlinedIcon key={1} className="m-auto" fontSize="medium" />,
@@ -52,20 +60,16 @@ const LeftSidebar = ({ user }: { user: User }) => {
     inviteBtnClicked,
   ];
 
-  const router = useRouter();
-  const [activeMenu, setActiveMenu] = useState(0);
-  const [showInviteModal, setShowInviteModal] = useState(false);
-  const [showUserDropMenu, setShowUserDropMenu] = useState(false);
-
   return (
-    <>
+    <div className="">
       <InviteModal showModal={showInviteModal} closeFunc={closeInviteModal} />
       <div
-        className={`flex flex-col overflow-visible
-          items-center justify-between 
-          w-28 h-screen text-gray-700 bg-gray-100 rounded`}
+        style={visible ? { display: "flex" } : {}}
+        className={`sm:flex hidden flex-col overflow-visible
+                    items-center justify-between fixed  z-10
+                    sm:w-28 w-20 h-screen text-gray-700 bg-gray-100 rounded`}
       >
-        <a className="flex w-full px-3 mt-6 justify-center">
+        <a className="flex w-full px-3 sm:mt-6 mt-3 mb-3 justify-center">
           <Image alt="logo" src="/logo.png" width={56} height={56} />
         </a>
         <div className="w-full">
@@ -76,7 +80,7 @@ const LeftSidebar = ({ user }: { user: User }) => {
                   key={idx}
                   label={item}
                   icon={menuIcons[idx]}
-                  active={idx == activeMenu ? true : false}
+                  active={noSelNav ? false : idx == activeMenu ? true : false}
                   clickFunc={menuClickFuncs[idx]}
                 />
               );
@@ -99,46 +103,47 @@ const LeftSidebar = ({ user }: { user: User }) => {
           {showUserDropMenu && (
             <ul
               className={`absolute left-10 bottom-16 z-[1000] 
-              float-left m-0 min-w-max list-none overflow-hidden 
-              rounded-lg border-none bg-white bg-clip-padding 
-              text-left text-base shadow-lg dark:bg-neutral-700`}
+                          float-left m-0 min-w-max list-none overflow-hidden 
+                          rounded-lg border-none bg-white bg-clip-padding 
+                          text-left text-base shadow-lg dark:bg-neutral-700`}
             >
               <li>
-                <a
+                <Link
+                  href={"/dashboard/user/profile"}
                   className={`block w-full whitespace-nowrap bg-transparent 
-                  px-4 py-2 text-sm font-normal text-neutral-700 
-                  hover:bg-neutral-100 active:text-neutral-800 
-                  active:no-underline disabled:pointer-events-none 
-                  disabled:bg-transparent disabled:text-neutral-400 
-                  dark:text-neutral-200 dark:hover:bg-neutral-600
-                  cursor-pointer`}
+                              px-4 py-2 text-sm font-normal text-neutral-700 
+                              hover:bg-neutral-100 active:text-neutral-800 
+                              active:no-underline disabled:pointer-events-none 
+                              disabled:bg-transparent disabled:text-neutral-400 
+                              dark:text-neutral-200 dark:hover:bg-neutral-600
+                              cursor-pointer`}
                 >
-                  View Profile
-                </a>
+                  Profile
+                </Link>
               </li>
               <li>
                 <a
                   className={`block w-full whitespace-nowrap  cursor-pointer
-                  bg-transparent px-4 py-2 text-sm font-normal 
-                  text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 
-                  active:no-underline disabled:pointer-events-none disabled:bg-transparent 
-                  disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-neutral-600`}
+                              bg-transparent px-4 py-2 text-sm font-normal 
+                              text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 
+                              active:no-underline disabled:pointer-events-none disabled:bg-transparent 
+                              disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-neutral-600`}
                 >
-                  User Settings
+                  Settings
                 </a>
               </li>
               <hr
                 className={`my-2 h-0 border border-t-0 border-solid 
-              border-neutral-700 opacity-25 dark:border-neutral-200`}
+                          border-neutral-700 opacity-25 dark:border-neutral-200`}
               />
               <li>
                 <a
                   className={`block w-full whitespace-nowrap bg-transparent cursor-pointer
-                    px-4 py-2 text-sm font-normal text-neutral-700 
-                    hover:bg-neutral-100 active:text-neutral-800 
-                    active:no-underline disabled:pointer-events-none 
-                    disabled:bg-transparent disabled:text-neutral-400 
-                    dark:text-neutral-200 dark:hover:bg-neutral-600`}
+                              px-4 py-2 text-sm font-normal text-neutral-700 
+                              hover:bg-neutral-100 active:text-neutral-800 
+                              active:no-underline disabled:pointer-events-none 
+                              disabled:bg-transparent disabled:text-neutral-400 
+                              dark:text-neutral-200 dark:hover:bg-neutral-600`}
                   onClick={onSignOutBtnClicked}
                 >
                   Sign Out
@@ -148,7 +153,22 @@ const LeftSidebar = ({ user }: { user: User }) => {
           )}
         </div>
       </div>
-    </>
+      <div>
+        <button
+          className={
+            `inline-flex items-center p-2 text-sm font-medium text-center sm:hidden
+            text-gray-900 bg-blue-300 rounded-lg fixed top-1 ${visible ? "left-20" : "left-1"}`}
+          onClick={() => setVisible(!visible)}>
+          <svg
+            className="w-4 h-4"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
   );
 };
 

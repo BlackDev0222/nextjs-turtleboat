@@ -30,17 +30,22 @@
     "next-auth": "^4.22.1",
     "node-datetime": "^2.1.2",
     "react": "18.2.0",
+    "react-country-region-selector": "^3.6.1",
     "react-dom": "18.2.0",
+    "react-phone-input-2": "^2.15.1",
     "react-select": "^5.7.2",
     "react-tagsinput": "^3.20.1",
+    "shortid": "^2.2.16",
     "sweetalert2": "^11.7.3",
     "typescript": "5.0.4",
     "uuid": "^9.0.0",
-    "validator": "^13.9.0"
+    "validator": "^13.9.0",
+    "zustand": "^4.3.7"
   },
   "devDependencies": {
     "@types/cookie": "^0.5.1",
     "@types/react-tagsinput": "^3.19.9",
+    "@types/shortid": "^0.0.29",
     "@types/uuid": "^9.0.1",
     "@types/validator": "^13.7.15",
     "autoprefixer": "^10.4.14",
